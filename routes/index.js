@@ -1,8 +1,8 @@
 const express = require('express');
-const routeOptimizationRoutes = require('./routeOptimization.routes');
+const routeOptimizationRoutes = require('./optimizacionRutas.routes');
 
-const router = express.Router();
+const enrutador = express.Router();
 
-router.use('/optimizacion-rutas', routeOptimizationRoutes);
+enrutador.use('/optimizacion-rutas', routeOptimizationRoutes);
 
-module.exports = router;
+module.exports = enrutador;

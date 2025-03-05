@@ -1,8 +1,8 @@
 const axios = require('axios');
 const config = require('../config');
-const { OpenRouteServiceError } = require('../utils/errors');
+const { ErroresServicioOpenRoute } = require('../utils/errores');
 
-class OpenRouteService {
+class ServicioOpenRoute {
   constructor() {
     this.headers = {
       'Authorization': config.openRouteService.apiKey,
@@ -10,7 +10,7 @@ class OpenRouteService {
     };
   }
 
-  async getMatrix(locations) {
+  async getMatriz(locations) {
     try {
       const response = await axios.post(
         config.openRouteService.matrixUrl,
@@ -25,11 +25,11 @@ class OpenRouteService {
 
       return response.data;
     } catch (error) {
-      throw new OpenRouteServiceError('Error getting distance matrix', error);
+      throw new ErroresServicioOpenRoute('Error Obteniendo matriz de distancias', error);
     }
   }
 
-  async getDirections(coordinates) {
+  async getDirecciones(coordinates) {
     try {
       const response = await axios.post(
         config.openRouteService.directionsUrl,
@@ -43,9 +43,9 @@ class OpenRouteService {
 
       return response.data;
     } catch (error) {
-      throw new OpenRouteServiceError('Error getting directions', error);
+      throw new ErroresServicioOpenRoute('Error Obteniendo Direcciones', error);
     }
   }
 }
 
-module.exports = OpenRouteService;
+module.exports = ServicioOpenRoute;

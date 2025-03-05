@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const routes = require('./routes');
-const errorHandler = require('./middleware/errorHandler');
+const gestorErrores = require('./middleware/gestorErrores');
 
 const app = express();
 
@@ -12,6 +12,6 @@ app.use(express.json());
 app.use('/api', routes);
 
 // Error handling
-app.use(errorHandler);
+app.use(gestorErrores);
 
 module.exports = app;

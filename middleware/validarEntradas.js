@@ -1,17 +1,17 @@
-function validateRouteInput(req, res, next) {
+function validarEntradas(req, res, next) {
     const { coordenadasInicio, ubicaciones } = req.body;
   
     if (!coordenadasInicio || !Array.isArray(coordenadasInicio) || coordenadasInicio.length !== 2) {
       return res.status(400).json({
-        error: 'Invalid start coordinates',
-        message: 'Start coordinates must be an array of [longitude, latitude]'
+        error: 'Coordenadas de inicio no válidas',
+        message: 'Las coordenadas iniciales deben ser una matriz de [longitud, latitud].'
       });
     }
   
     if (!ubicaciones || !Array.isArray(ubicaciones)) {
       return res.status(400).json({
-        error: 'Invalid locations',
-        message: 'Locations must be an array of objects with lng and lat properties'
+        error: 'Ubicaciones no válidas',
+        message: 'Las ubicaciones deben ser una matriz de objetos con las propiedades lng y lat'
       });
     }
   
@@ -24,12 +24,12 @@ function validateRouteInput(req, res, next) {
   
     if (!validLocations) {
       return res.status(400).json({
-        error: 'Invalid location format',
-        message: 'Each location must have numeric lng and lat properties'
+        error: 'Formato de ubicación no válido',
+        message: 'Cada ubicación debe tener propiedades numéricas lng y lat'
       });
     }
   
     next();
   }
   
-  module.exports = validateRouteInput;
+  module.exports = validarEntradas;
