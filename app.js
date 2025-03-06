@@ -6,6 +6,7 @@ const usuarioRoutes = require('./routes/usuarios.routes');
 const rutasOptimizadasRoutes = require('./routes/rutasOptimizadas.routes');
 const ubicacionesRoutes = require('./routes/ubicacionesTemporales.routes');
 const pedidosRoutes = require('./routes/pedidos.routes');
+const detallePedidosRoutes = require('./routes/detallePedidos.routes');
 const gestorErrores = require('./middleware/gestorErrores');
 
 const app = express();
@@ -22,6 +23,7 @@ app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/rutas', rutasOptimizadasRoutes);
 app.use('/api/ubicaciones', ubicacionesRoutes);
 app.use('/api/pedidos', pedidosRoutes);
+app.use('/api/detalle_pedidos', detallePedidosRoutes);
 
 // Error handling
 app.use(gestorErrores);
