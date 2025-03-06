@@ -4,6 +4,7 @@ const routes = require('./routes');
 const authRoutes = require('./routes/auth.routes');
 const usuarioRoutes = require('./routes/usuarios.routes');
 const rutasOptimizadasRoutes = require('./routes/rutasOptimizadas.routes');
+const ubicacionesRoutes = require('./routes/ubicacionesTemporales.routes');
 const gestorErrores = require('./middleware/gestorErrores');
 
 const app = express();
@@ -18,6 +19,7 @@ app.use('/api', routes);
 app.use('/api/auth', authRoutes);
 app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/rutas', rutasOptimizadasRoutes);
+app.use('/api/ubicaciones', ubicacionesRoutes);
 
 // Error handling
 app.use(gestorErrores);

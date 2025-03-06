@@ -14,8 +14,8 @@ const validarPrivilegios = require('../middleware/validarPrivilegios');
 router.get('/', validarJWT, obtenerRutas);
 router.get('/estado/:estado', validarJWT, obtenerRutasPorEstado);
 router.get('/:id', validarJWT, obtenerRuta);
-router.post('/', validarJWT, validarPrivilegios('admin'), crearRuta);
-router.put('/:id', validarJWT, validarPrivilegios('admin'), actualizarRuta);
-router.delete('/:id', validarJWT, validarPrivilegios('admin'), eliminarRuta);
+router.post('/', validarJWT, validarPrivilegios('basico'), crearRuta);
+router.put('/:id', validarJWT, validarPrivilegios('basico'), actualizarRuta);
+router.delete('/:id', validarJWT, validarPrivilegios('basico'), eliminarRuta);
 
 module.exports = router;
