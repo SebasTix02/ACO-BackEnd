@@ -62,3 +62,19 @@ exports.obtenerRutasPorEstado = async (req, res, next) => {
     next(error);
   }
 };
+exports.actualizarEstadoPedidos = async (req, res, next) => {
+  try {
+    const { idRuta, nuevoEstado } = req.params;
+    const pedidosActualizados = await rutaService.actualizarEstadoPedidosPorRuta(idRuta, nuevoEstado);
+    
+    res.json({
+      ok: true,
+      mensaje: `Estado actualizado a ${nuevoEstado}`,
+      afectados: pedidosActualizados.length,
+      pedidos: pedidosActualizados
+    });
+    
+  } catch (error) {
+    next(error);
+  }
+};

@@ -63,6 +63,40 @@ class RutaOptimizadaService {
     const [rows] = await pool.query('SELECT * FROM rutas_optimizadas WHERE estado = ?', [estado]);
     return rows;
   }
+  async actualizarEstadoPedidosPorRuta(idRuta, nuevoEstado) {
+    // Validar estado permitido
+    const estadosPermitidos = ['COMPLETADA', 'CANCELADA'];
+    if (!estadosPermitidos.includes(nuevoEstado.toUpperCase())) {
+      throw new Error('Estado no válido');
+    }
+  
+    const connection = await pool.getConnection();
+    try {
+      await connection.beginTransaction();
+  
+      // Actualizar estado de los pedidos
+      await connection.query(
+        `UPDATE pedidos 
+         SET estado = ?
+         WHERE id_ruta = ?`,
+        [nuevoEstado.toUpperCase(), idRuta]
+      );
+  
+      // Obtener pedidos actualizados
+      const [pedidos] = await connection.query(
+        'SELECT * FROM pedidos WHERE id_ruta = ?',
+        [idRuta]
+      );
+  
+      await connection.commit();
+      return pedidos;
+    } catch (error) {
+      await connection.rollback();
+      throw error;
+    } finally {
+      connection.release();
+    }
+  }
 }
 
 module.exports = new RutaOptimizadaService();
