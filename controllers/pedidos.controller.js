@@ -20,6 +20,13 @@ exports.obtenerPedido = async (req, res, next) => {
 
 exports.crearPedido = async (req, res, next) => {
   try {
+    if (!req.body.total && req.body.detalles_pedidos) {
+      req.body.total = req.body.detalles_pedidos.reduce(
+        (sum, detalle) => sum + (detalle.cantidad * detalle.precio_unitario),
+        0
+      );
+    }
+    
     const nuevoPedido = await pedidoService.crearPedido(req.body);
     res.status(201).json(nuevoPedido);
   } catch (error) {
@@ -29,13 +36,19 @@ exports.crearPedido = async (req, res, next) => {
 
 exports.actualizarPedido = async (req, res, next) => {
   try {
+    if (req.body.detalles_pedidos) {
+      req.body.total = req.body.detalles_pedidos.reduce(
+        (sum, detalle) => sum + (detalle.cantidad * detalle.precio_unitario),
+        0
+      );
+    }
+    
     const pedidoActualizado = await pedidoService.actualizarPedido(req.params.id, req.body);
     pedidoActualizado ? res.json(pedidoActualizado) : res.status(404).json({ mensaje: 'Pedido no encontrado' });
   } catch (error) {
     next(error);
   }
 };
-
 exports.eliminarPedido = async (req, res, next) => {
   try {
     const resultado = await pedidoService.eliminarPedido(req.params.id);

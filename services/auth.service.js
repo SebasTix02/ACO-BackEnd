@@ -4,8 +4,6 @@ const { generarJWT } = require('../helpers/jwt');
 
 class AuthService {
   async login(usuario, clave) {
-    // Buscar usuario
-    console.log(usuario, clave);
     const [users] = await pool.query(
       'SELECT * FROM usuarios WHERE usuario = ?',
       [usuario]

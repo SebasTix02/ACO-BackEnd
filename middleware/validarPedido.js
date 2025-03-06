@@ -32,7 +32,7 @@ exports.validarPedido = async (req, res, next) => {
 };
 
 exports.validarEstadoPedido = (req, res, next) => {
-  const estadosPermitidos = ['PENDIENTE', 'EN_PROCESO', 'EN_RUTA', 'ENTREGADO', 'CANCELADO'];
+  const estadosPermitidos = ['PENDIENTE', 'EN_RUTA', 'COMPLETADO', 'CANCELADO'];
   if (req.body.estado && !estadosPermitidos.includes(req.body.estado.toUpperCase())) {
     return res.status(400).json({
       ok: false,

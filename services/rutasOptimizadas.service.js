@@ -65,7 +65,7 @@ class RutaOptimizadaService {
   }
   async actualizarEstadoPedidosPorRuta(idRuta, nuevoEstado) {
     // Validar estado permitido
-    const estadosPermitidos = ['COMPLETADA', 'CANCELADA'];
+    const estadosPermitidos = ['PENDIENTE', 'EN_RUTA', 'COMPLETADO', 'CANCELADO'];
     if (!estadosPermitidos.includes(nuevoEstado.toUpperCase())) {
       throw new Error('Estado no válido');
     }
