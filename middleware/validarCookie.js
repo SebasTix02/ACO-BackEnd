@@ -1,38 +1,27 @@
 const jwt = require('jsonwebtoken');
 
+// validarCookie.js (backend)
 const validarCookie = (req, res, next) => {
-  // Obtener token SOLO de las cookies
   const token = req.cookies.token;
   
   if (!token) {
-    return res.status(401).json({
-      ok: false,
-      mensaje: 'Cookie de autenticación no encontrada'
-    });
+    return res.status(401).json({ ok: false });
   }
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
-    req.usuario = {
-      id: decoded.id,
-      usuario: decoded.usuario,
-      nombre: decoded.nombre,
-      privilegios: decoded.privilegios
-    };
-
-    // Eliminar lógica de renovación automática (opcional)
+    req.usuario = decoded;
     next();
   } catch (error) {
+    // Limpiar cookie con mismas opciones que en login
     res.clearCookie('token', {
-      httpOnly: false,
-      secure: true,
-      sameSite: 'Lax'
+      httpOnly: true,
+      secure: false,
+      sameSite: 'None',
+      domain: '192.168.100.51'
     });
-    return res.status(401).json({
-      ok: false,
-      mensaje: 'Cookie inválida o expirada'
-    });
+    return res.status(401).json({ ok: false });
   }
 };
+
 module.exports = validarCookie;

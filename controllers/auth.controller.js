@@ -9,10 +9,11 @@ exports.login = async (req, res, next) => {
     
     // Configurar cookie HTTPOnly
     res.cookie('token', token, {
-      httpOnly: false,
-      secure: true,
-      sameSite: 'None',
-      maxAge: 86400000
+      httpOnly: true,
+      secure: false, // Importante: false para HTTP
+      sameSite: 'Lax', // Funciona mejor en HTTP que 'None'
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 días
+      path: '/'
     });
 
     // Eliminar el token de la respuesta JSON

@@ -25,12 +25,13 @@ const validarJWT = (req, res, next) => {
         const tiempoRestante = decoded.exp - Math.floor(Date.now() / 1000);
         if (tiempoRestante < 86400) { // 24 horas antes de expirar
             const nuevoToken = generarNuevoToken(decoded);
-            res.cookie('token', nuevoToken, {
-                httpOnly: false,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'Lax',
-                maxAge: 7 * 24 * 60 * 60 * 1000
-            });
+            res.cookie('token', token, {
+                httpOnly: true,
+                secure: false, // Importante: false para HTTP
+                sameSite: 'Lax', // Funciona mejor en HTTP que 'None'
+                maxAge: 7 * 24 * 60 * 60 * 1000, // 7 días
+                path: '/'
+              });
         }
 
         next();
