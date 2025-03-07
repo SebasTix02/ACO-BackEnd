@@ -15,27 +15,25 @@ class AuthService {
 
     const user = users[0];
 
-    // Verificar clave
     const claveValida = await bcrypt.compare(clave, user.clave);
-
     if (!claveValida) {
       throw new Error('Credenciales inválidas');
     }
 
-    // Extraer datos relevantes para el payload
+    // Añadir expiración al payload
     const userPayload = {
       id: user.id,
       usuario: user.usuario,
       nombre: user.nombre,
-      privilegios: user.privilegios
+      privilegios: user.privilegios,
+      exp: Math.floor(Date.now() / 1000) + (7 * 24 * 60 * 60) // 7 días
     };
 
-    // Generar JWT
     const token = generarJWT(userPayload);
 
     return {
       token,
-      usuario: userPayload // Devolvemos los datos del usuario
+      usuario: userPayload
     };
   }
 }

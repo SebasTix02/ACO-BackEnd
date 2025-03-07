@@ -9,17 +9,17 @@ const {
   obtenerRutasPorEstado,
   actualizarEstadoPedidos
 } = require('../controllers/rutasOptimizadas.controller');
-const validarJWT = require('../middleware/validarJWT');
+const validarCookie = require('../middleware/validarCookie');
 const validarPrivilegios = require('../middleware/validarPrivilegios');
 
-router.get('/', validarJWT, obtenerRutas);
-router.get('/estado/:estado', validarJWT, obtenerRutasPorEstado);
-router.get('/:id', validarJWT, obtenerRuta);
-router.post('/', validarJWT, validarPrivilegios('basico'), crearRuta);
-router.put('/:id', validarJWT, validarPrivilegios('basico'), actualizarRuta);
-router.delete('/:id', validarJWT, validarPrivilegios('basico'), eliminarRuta);
+router.get('/', validarCookie, obtenerRutas);
+router.get('/estado/:estado', validarCookie, obtenerRutasPorEstado);
+router.get('/:id', validarCookie, obtenerRuta);
+router.post('/', validarCookie, validarPrivilegios('basico'), crearRuta);
+router.put('/:id', validarCookie, validarPrivilegios('basico'), actualizarRuta);
+router.delete('/:id', validarCookie, validarPrivilegios('basico'), eliminarRuta);
 router.post('/:idRuta/actualizar-estado/:nuevoEstado',
-  validarJWT,
+  validarCookie,
   validarPrivilegios('admin'),
   actualizarEstadoPedidos
 );

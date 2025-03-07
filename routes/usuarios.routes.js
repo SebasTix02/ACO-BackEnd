@@ -7,13 +7,13 @@ const {
   actualizarUsuario,
   eliminarUsuario
 } = require('../controllers/usuarios.controller');
-const validarJWT = require('../middleware/validarJWT'); 
+const validarCookie = require('../middleware/validarCookie'); 
 const validarPrivilegios = require('../middleware/validarPrivilegios'); 
 
-router.get('/', validarJWT, validarPrivilegios('admin'), obtenerUsuarios);
-router.get('/:id', validarJWT, validarPrivilegios('admin'), obtenerUsuario);
-router.post('/', validarJWT, validarPrivilegios('admin'), crearUsuario);
-router.put('/:id', validarJWT, validarPrivilegios('admin'), actualizarUsuario);
-router.delete('/:id', validarJWT, validarPrivilegios('admin'), eliminarUsuario);
+router.get('/', validarCookie, validarPrivilegios('admin'), obtenerUsuarios);
+router.get('/:id', validarCookie, validarPrivilegios('admin'), obtenerUsuario);
+router.post('/', validarCookie, validarPrivilegios('admin'), crearUsuario);
+router.put('/:id', validarCookie, validarPrivilegios('admin'), actualizarUsuario);
+router.delete('/:id', validarCookie, validarPrivilegios('admin'), eliminarUsuario);
 
 module.exports = router;
