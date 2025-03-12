@@ -7,17 +7,18 @@ class ServicioOptimizacionRutas {
     this.servicioOpenRoute = new ServicioOpenRoute();
     this.aco = new ACO();
   }
-
-  async optimizarRuta(coordenadasInicio, ubicaciones) {
-    // Format ubicaciones
-    const UbicacionesConFormato = ubicaciones.map(loc => [loc.lng, loc.lat]);
-    UbicacionesConFormato.unshift(coordenadasInicio);
-    UbicacionesConFormato.push(coordenadasInicio);
-
-    // Get distance and duration matrices
-    const matrizDatos = await this.servicioOpenRoute.getMatriz(UbicacionesConFormato);
+  async optimizarRuta(coordenadasInicio, ubicacionesConNombres) {
+    // 1. Preparar coordenadas para la matriz (incluyendo inicio y fin)
+    const coordinatesForMatrix = [
+      coordenadasInicio,
+      ...ubicacionesConNombres.map(ubic => [ubic.lng, ubic.lat]),
+      coordenadasInicio
+    ];
+  
+    // 2. Obtener matriz de distancias
+    const matrizDatos = await this.servicioOpenRoute.getMatriz(coordinatesForMatrix);
     
-    // Optimize route using ACO
+    // 3. Optimizar ruta
     const { mejorRuta, mejorDistancia, mejorDuracion } = this.aco.ajustar(
       matrizDatos.distances,
       matrizDatos.durations,
@@ -29,16 +30,24 @@ class ServicioOptimizacionRutas {
       config.aco.q0,
       true
     );
-
-    // Get best route coordinates
-    const mejoresCoordenadasDeRuta = mejorRuta.map(index => UbicacionesConFormato[index]);
-    
-    // Get detailed route data
-    const datosRuta = await this.servicioOpenRoute.getDirecciones(mejoresCoordenadasDeRuta);
-
+  
+    // 4. Mapear la ruta optimizada con los datos originales
+    const rutaConNombres = mejorRuta.map(index => {
+      if (index === 0 || index === coordinatesForMatrix.length - 1) {
+        return {
+          lng: coordenadasInicio[0],
+          lat: coordenadasInicio[1],
+          nombre_cliente: 'INICIO'
+        };
+      }
+      return ubicacionesConNombres[index - 1]; // Ajustar índice por el inicio
+    });
+  
+    // 5. Obtener GeoJSON con nombres
+    const datosRuta = await this.servicioOpenRoute.getDirecciones(rutaConNombres);
+  
     return {
       mejorRuta: mejorRuta,
-      mejoresCoordenadasRuta: mejoresCoordenadasDeRuta,
       mejorDistancia: mejorDistancia,
       mejorDuracion: mejorDuracion,
       datosRuta: datosRuta
