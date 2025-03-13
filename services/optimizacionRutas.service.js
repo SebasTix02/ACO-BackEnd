@@ -42,7 +42,6 @@ class ServicioOptimizacionRutas {
       }
       return ubicacionesConNombres[index - 1]; // Ajustar índice por el inicio
     });
-  
     // 5. Obtener GeoJSON con nombres
     const datosRuta = await this.servicioOpenRoute.getDirecciones(rutaConNombres);
   

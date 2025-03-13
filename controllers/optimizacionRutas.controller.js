@@ -10,12 +10,11 @@ exports.optimizarRuta = async (req, res, next) => {
     const ubicacionesConNombres = ubicaciones.map(ubicReq => {
 
       const ubicacion = ubicacionesTemporales.find(
-        ut => ut.id_ubicacion === ubicReq.tracking_id
+        ut => ut.id_ubicacion == ubicReq.tracking_id
       );
-      
       return {
         ...ubicReq,
-        nombre_cliente: ubicacion?.nom_cliente || 'Sin nombre'
+        nombre_cliente: ubicacion?.nombre_contacto || 'Sin nombre'
       };
     });
     // Pasar al servicio de optimización

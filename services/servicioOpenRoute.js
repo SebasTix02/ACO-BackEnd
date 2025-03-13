@@ -110,7 +110,7 @@ class ServicioOpenRoute {
         } else {
           textoMarcador = `${numeroOrden-1}. ${ubicacion.nombre_cliente || 'Sin nombre'}`;
         }
-  
+        console.log(ubicacion);
         return {
           type: 'Feature',
           properties: {

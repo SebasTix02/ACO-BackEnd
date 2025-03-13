@@ -5,7 +5,7 @@ class PedidoService {
     const [rows] = await pool.query(`
       SELECT 
         p.*, 
-        c.nom_cliente AS nombre_cliente, 
+        u.nombre_contacto AS nombre_cliente, 
         u.latitud, 
         u.longitud,
         COALESCE(
