@@ -22,7 +22,7 @@ class RutaOptimizadaService {
   async actualizarRuta(id, rutaData) {
     const campos = [];
     const valores = [];
-    
+
     // Mapear campos permitidos
     const camposPermitidos = {
       estado: 'estado',
@@ -30,7 +30,7 @@ class RutaOptimizadaService {
       tiempo_estimado: 'tiempo_estimado',
       geojson: 'geojson'
     };
-  
+
     // Construir dinámicamente los campos
     Object.entries(rutaData).forEach(([key, value]) => {
       if (camposPermitidos[key]) {
@@ -39,17 +39,17 @@ class RutaOptimizadaService {
         valores.push(key === 'geojson' ? JSON.stringify(value) : value);
       }
     });
-  
+
     if (campos.length === 0) {
       throw new Error('No hay campos válidos para actualizar');
     }
-  
+
     const query = `UPDATE rutas_optimizadas 
                    SET ${campos.join(', ')} 
                    WHERE id_ruta = ?`;
-    
+
     valores.push(id);
-  
+
     await pool.query(query, valores);
     return this.obtenerRutaPorId(id);
   }

@@ -18,7 +18,6 @@ exports.optimizarRuta = async (req, res, next) => {
         nombre_cliente: ubicacion?.nom_cliente || 'Sin nombre'
       };
     });
-    console.log('ubicacionesConNombres', ubicacionesConNombres);
     // Pasar al servicio de optimización
     const result = await routeOptimizationService.optimizarRuta(
       coordenadasInicio,
