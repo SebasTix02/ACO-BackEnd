@@ -11,7 +11,7 @@ const detallePedidosRoutes = require('./routes/detallePedidos.routes');
 const clientesRoutes = require('./routes/clientes.routes');
 const articulosRoutes = require('./routes/articulos.routes');
 const gestorErrores = require('./middleware/gestorErrores');
-
+const WebSocket = require('ws');
 const app = express();
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
@@ -38,7 +38,18 @@ app.use('/api/articulos', articulosRoutes);
 
 // Error handling
 app.use(gestorErrores);
+const wss = new WebSocket.Server({ port: 8080 });
 
+wss.on('connection', (ws) => {
+  console.log('Cliente conectado');
+  
+  // Enviar mensaje de confirmación
+  ws.send('WebSocket conectado');
+  
+  ws.on('close', () => {
+    console.log('Cliente desconectado');
+  });
+});
 module.exports = app;
 
 /*Usuario Creado {

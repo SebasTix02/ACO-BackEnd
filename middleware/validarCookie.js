@@ -18,7 +18,7 @@ const validarCookie = (req, res, next) => {
       httpOnly: true,
       secure: false,
       sameSite: 'None',
-      domain: '192.168.100.51'
+      domain: '192.168.100.52'
     });
     return res.status(401).json({ ok: false });
   }
