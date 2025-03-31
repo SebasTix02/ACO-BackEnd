@@ -10,6 +10,7 @@ const pedidosRoutes = require('./routes/pedidos.routes');
 const detallePedidosRoutes = require('./routes/detallePedidos.routes');
 const clientesRoutes = require('./routes/clientes.routes');
 const articulosRoutes = require('./routes/articulos.routes');
+const dashboardRoutes = require('./routes/dashboard.routes');
 const gestorErrores = require('./middleware/gestorErrores');
 const WebSocket = require('ws');
 const app = express();
@@ -35,6 +36,7 @@ app.use('/api/pedidos', pedidosRoutes);
 app.use('/api/detalle_pedidos', detallePedidosRoutes);
 app.use('/api/clientes', clientesRoutes);
 app.use('/api/articulos', articulosRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 // Error handling
 app.use(gestorErrores);
