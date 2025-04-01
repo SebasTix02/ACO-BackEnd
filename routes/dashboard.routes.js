@@ -20,21 +20,21 @@ router.post(
 router.post(
     '/patronesConsumo',
     validarCookie,
-    validarPrivilegios('analista'),
+    validarPrivilegios('admin'),
     obtenerPatronesConsumo
 );
 
 router.post(
     '/kpis',
     validarCookie,
-    validarPrivilegios('gerente'),
+    validarPrivilegios('admin'),
     obtenerKPIs
 );
 
 router.post(
     '/distribucionVentas',
     validarCookie,
-    validarPrivilegios('analista'),
+    validarPrivilegios('admin'),
     obtenerDistribucionVentas
 );
 module.exports = router;
