@@ -130,3 +130,15 @@ exports.obtenerDistribucionVentas = async (req, res, next) => {
         next(error);
     }
 };
+
+exports.obtenerEstadisticasGenerales = async (req, res, next) => {
+    try {
+        const estadisticas = await dashboardService.obtenerEstadisticasGenerales();
+        res.json({
+            exito: true,
+            data: estadisticas
+        });
+    } catch (error) {
+        next(error);
+    }
+};

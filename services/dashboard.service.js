@@ -288,6 +288,54 @@ class DashboardService {
             }
         }));
     }
+    async obtenerEstadisticasGenerales() {
+        const sql = `
+            SELECT
+                -- Ventas totales
+                (SELECT SUM(df.cantidad * df.precio) 
+                FROM detalle_facturas df) AS ventas_totales,
+                
+                -- Clientes activos
+                (SELECT COUNT(DISTINCT cod_cliente) 
+                FROM maestro_facturas) AS clientes_activos,
+                
+                -- Total productos vendidos
+                (SELECT SUM(cantidad) 
+                FROM detalle_facturas) AS productos_vendidos,
+                
+                -- Producto más vendido (versión corregida)
+                (SELECT a.nombre_art
+                 FROM detalle_facturas df
+                 INNER JOIN articulos a ON df.cod_art = a.cod_art
+                 GROUP BY df.cod_art
+                 ORDER BY SUM(df.cantidad) DESC
+                 LIMIT 1) AS producto_mas_vendido,
+                
+                -- Unidades vendidas del top producto
+                (SELECT SUM(cantidad)
+                 FROM detalle_facturas
+                 WHERE cod_art = (
+                     SELECT cod_art
+                     FROM detalle_facturas
+                     GROUP BY cod_art
+                     ORDER BY SUM(cantidad) DESC
+                     LIMIT 1
+                 )) AS unidades_vendidas_top
+        `;
+
+        const [result] = await pool.query(sql);
+        return this.formatearResultado(result[0]);
+    }
+
+    formatearResultado(data) {
+        return {
+            ventas_totales: Number(data.ventas_totales) || 0,
+            clientes_activos: data.clientes_activos || 0,
+            productos_vendidos: data.productos_vendidos || 0,
+            producto_mas_vendido: data.producto_mas_vendido || 'N/A',
+            unidades_vendidas: data.unidades_vendidas_top || 0
+        };
+    }
 }
 
 module.exports = new DashboardService();

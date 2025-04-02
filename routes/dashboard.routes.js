@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { obtenerClientesFrecuentes, obtenerPicosDemanda,obtenerPatronesConsumo, obtenerKPIs, obtenerDistribucionVentas } = require('../controllers/dashboard.controller');
+const { obtenerClientesFrecuentes, obtenerPicosDemanda,obtenerPatronesConsumo, obtenerKPIs, obtenerDistribucionVentas, obtenerEstadisticasGenerales } = require('../controllers/dashboard.controller');
 const validarCookie = require('../middleware/validarCookie');
 const validarPrivilegios = require('../middleware/validarPrivilegios');
 
@@ -37,4 +37,9 @@ router.post(
     validarPrivilegios('admin'),
     obtenerDistribucionVentas
 );
+
+router.get('/', 
+    validarCookie, 
+    validarPrivilegios('admin'), 
+    obtenerEstadisticasGenerales);
 module.exports = router;
