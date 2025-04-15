@@ -80,7 +80,7 @@ class DashboardService {
                 a.cod_art,
                 a.nombre_art,
                 SUM(df.cantidad) AS total_unidades,
-                SUM(df.cantidad * df.precio) AS total_ventas,
+                SUM(df.cantidad * (df.precio/df.cantidad)) AS total_ventas,
                 COUNT(DISTINCT m.factura) AS total_facturas
             FROM maestro_facturas m
             INNER JOIN detalle_facturas df ON m.factura = df.factura
@@ -129,7 +129,7 @@ class DashboardService {
         const sql = `
           SELECT
             -- Ventas totales y facturación
-            IFNULL(SUM(df.cantidad * df.precio), 0) AS ventas_totales,
+            IFNULL(SUM(df.cantidad * (df.precio/df.cantidad)), 0) AS ventas_totales,
             COUNT(DISTINCT mf.factura) AS total_facturas,
             COUNT(DISTINCT mf.cod_cliente) AS clientes_activos,
             
@@ -246,7 +246,7 @@ class DashboardService {
                 ciu.nombre_ciudad,
                 p.cod_provincia,  
                 p.nombre_provincia,  
-                SUM(df.cantidad * df.precio) AS ventas_totales,
+                SUM(df.cantidad * (df.precio/df.cantidad)) AS ventas_totales,
                 SUM(df.cantidad) AS unidades_vendidas,
                 COUNT(DISTINCT mf.factura) AS total_transacciones
             FROM maestro_facturas mf
@@ -292,7 +292,7 @@ class DashboardService {
         const sql = `
             SELECT
                 -- Ventas totales
-                (SELECT SUM(df.cantidad * df.precio) 
+                (SELECT SUM(df.cantidad * (df.precio/df.cantidad)) 
                 FROM detalle_facturas df) AS ventas_totales,
                 
                 -- Clientes activos
